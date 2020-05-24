@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bw.mapper.T_infoMapper">
+	<select id="selectInfoAll" resultType="com.bw.beans.T_info" parameterType="map">
+	SELECT i.id,i.name,i.uptime,i.status,t.name AS tname FROM `t_info` AS i ,`t_teacher` AS t WHERE i.`tc`=t.`id`
+	<if test="susheid != null and susheid != ''">
+	and i.name='${susheid}'
+	</if>
+	<if test="tname != null and tname != ''">
+	and t.name='${tname}'
+	</if>
+	<if test="status != null">
+	and i.status='${status}'
+	</if>
+	</select>
+	<select id="selectTeacherAll" resultType="com.bw.beans.T_teacher">
+	SELECT * FROM `t_teacher`
+	</select>
+	<update id="upradeInfo" parameterType="int">
+	UPDATE `t_info` SET `t_info`.`status`=0 WHERE `t_info`.`id`=#{id}
+	</update>
+	<insert id="addInfo" parameterType="com.bw.beans.T_info">
+	INSERT INTO `t_info` VALUE(0,#{name},#{uptime},1,#{tc})
+	</insert>
+	<select id="selectById"  parameterType="int"  resultType="com.bw.beans.T_info">
+		SELECT i.id,i.name,i.uptime,i.status,t.name AS tname FROM `t_info` AS i ,`t_teacher` AS t WHERE i.`tc`=t.`id` and i.id=#{id}
+	</select>
+</mapper>
